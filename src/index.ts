@@ -19,8 +19,10 @@ const io = new Server(server, {
   }
 });
 
+app.locals.timerDadosTeste = null;
+
 configureRoutes(app);
-configureSockets(io);
+configureSockets(io, app);
 
 const port = process.env.PORT || 4000;
 

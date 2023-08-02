@@ -1,8 +1,9 @@
 import { Server } from 'socket.io';
 import { handleBoat } from '../handlers/boat-handlers';
 import { handleRaceHistory } from '../handlers/history-handlers';
+import { Express, Request, Response } from 'express';
 
-export function configureSockets(io: Server): void {
+export function configureSockets(io: Server, app: Express): void {
   let dataHistory: string[] = [];
   let record: boolean[] = [];
   let speed: string[] = ['0'];
@@ -15,7 +16,7 @@ export function configureSockets(io: Server): void {
       console.log('user disconnected: ', socket.id);
     });
 
-    handleBoat(socket, io, speed, namePilot);
+    handleBoat(socket, io, speed, namePilot, app);
     handleRaceHistory(socket, io, dataHistory, record, speed, namePilot)
   });
 }

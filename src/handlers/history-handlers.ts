@@ -14,6 +14,8 @@ export function handleRaceHistory(
     socket.emit("recordStatus", record.length > 0);
   }, 3000);
 
+  //ordem dos dados:
+  //corrente do motor, corrente baterias, temperatura, humidade, tensão alimentação, estadoStringSolar1, estadoStringSolar2, tensão saída MPPT, tensão entrada MPPT, corrente MPPT
   socket.on("newinfo", (data: string) => {
     if (record.length > 0) {
       const updateAt = getDataAtualBrasil().format('DD/MM/YYYY HH:mm:ss')
@@ -29,6 +31,7 @@ export function handleRaceHistory(
     }
     else {
       record.pop();
+      dataHistory.unshift('correnteMotor,correnteBaterias,temperatura,umidade,tensaoAlimentacaoPCB,estadoStringSolar1,estadoStringSolar2,tensaoSaidaMPPT,tensaoEntradaMPPT,correnteMPPT');
       saveFileToStorage(dataHistory);
     }
     console.log(record.length > 0);
