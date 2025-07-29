@@ -29,8 +29,8 @@ export function configureRoutes(app: Express, io: Server): void {
       console.log('GPT response sent');
     } catch (error) {
       console.log(error);
-      res.write('Estou com dificuldades para responder, tente novamente mais tarde.')
-      res.write(`Status erro: ${error}`)
+      res.write('Estou com dificuldades para responder, tente novamente mais tarde.');
+      res.write(`Status erro: ${error}`);
       res.end();
     }
   });
@@ -45,19 +45,22 @@ export function configureRoutes(app: Express, io: Server): void {
 
     console.log(req.file);
     
-    await saveFile(req.file, io)
+    await saveFile(req.file, io);
 
     res.status(200).send('File uploaded successfully.');
   });
 
   app.get('/downloadOTA', async (req, res) => {
-    const fileName = 'OTA/esp32_Firmware.ino.bin'
+    const fileName = 'OTA/esp32_Firmware.ino.bin';
 
     const metadata = await getFileMetadata(fileName);
-    const fileStream = await getFile(fileName)
-    res.setHeader('Content-Length', metadata.size);
-
-    // res.setHeader('Content-Length', fileStream.)
+    const fileStream = await getFile(fileName);
+    
+    // Garantir que o size existe antes de definir o Content-Length
+    if (metadata.size) {
+      res.setHeader('Content-Length', metadata.size);
+    }
+    
     fileStream.pipe(res)
   })
 }
